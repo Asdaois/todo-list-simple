@@ -12,7 +12,6 @@ export const todosReducer = (state, action) => {
         return todo
       })
       case TodoTypes.UPDATE:
-      console.log(state)
       return state.map(todo => {
         if (todo.id === payload.id) {
           return payload.todoUpdated
@@ -20,7 +19,7 @@ export const todosReducer = (state, action) => {
         return todo
       })
     case TodoTypes.DELETE:
-      break;
+      return state.filter(todo => todo.id !== payload.id)
     default:
       break;
   }

@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer} from "react";
 import { v4 } from "uuid";
 import Todo from "./components/todo/Todo";
 import { todosReducer } from "./reduces/todos.reduce";
@@ -21,7 +21,7 @@ function App() {
   const [todos, dispatch] = useReducer(todosReducer, [TodoPlaceholder])
 
   return (
-    <div className="">
+    <div className="min-w-full">
       {todos.map((todo) => (
         <Todo todo={todo} key={todo.id}  dispatch={dispatch}/>
       ))}

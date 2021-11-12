@@ -1,30 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { Priority } from "../../App";
 import { getKeysFromObject } from "../../helpers/enumHelpers";
 
 const getPriorityOptions = () =>
-  getKeysFromObject(Priority).map((value) => {
-    return (
-      <option name="" id="">
-        {value}
-      </option>
-    );
+  getKeysFromObject(Priority).map((value, index) => {
+    return <option key={index}>{value.toUpperCase()}</option>;
   });
 
-const TodoForm = ({ handleChange }) => {
+const TodoForm = ({ todoValues, handleSubmitNewTodo }) => {
+  const [newTodo, setNewTodo] = useState({ ...todoValues });
+
+  const handleChangeValues = (e) => {
+    const property = (e.target.name);
+    const value = (e.target.value);
+    setNewTodo({...newTodo, [property]: value})
+  };
+
   return (
     <div className="todo">
       <form action="">
-        <input type="text" name="name" placeholder="Input a name" />
-        <select>{getPriorityOptions()}</select>
+        <input
+          type="text"
+          name="name"
+          placeholder="Input a name"
+          value={newTodo.name}
+          onChange={handleChangeValues}
+        />
+        <select
+          name="priority"
+          value={newTodo.priority}
+          onChange={handleChangeValues}
+        >
+          {getPriorityOptions()}
+        </select>
         <div className="">
-          <label>Due Time:</label>
-          <input type="datetime-local" />
+          <label>Due Time: </label>
+          <input
+            type="datetime-local"
+            name="dueDate"
+            value={newTodo.dueDate}
+            onChange={handleChangeValues}
+          />
         </div>
         <button
           onClick={(e) => {
             e.preventDefault();
-            handleChange();
+            handleSubmitNewTodo(newTodo);
           }}
         >
           Change

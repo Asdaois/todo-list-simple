@@ -1,7 +1,6 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
+import { v4 } from "uuid";
 import Todo from "./components/todo/Todo";
-import TodoForm from "./components/todo/TodoForm";
-import { getKeysFromObject } from "./helpers/enumHelpers";
 
 export const Priority = {
   Low: "LOW",
@@ -10,18 +9,33 @@ export const Priority = {
 };
 
 export const TodoPlaceholder = {
+  id: v4(),
   name: "Test",
   completed: false,
-  priority: Priority.LOW,
-  dueDate: Date.now(),
+  priority: Priority.Low,
+  dueDate: new Date().toISOString().substring(0, 16),
 };
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([TodoPlaceholder]);
+
+  const changeTodo = (todoToChange) => {
+    const newTodos = [...JSON.parse(JSON.stringify(todos))].map(todo => {
+      if (todo.id === todoToChange.id)
+      {
+        return todoToChange
+      }
+      return todo
+    })
+
+    setTodos(newTodos)
+  }
 
   return (
     <div className="">
-      <Todo todo={TodoPlaceholder} />
+      {todos.map((todo) => (
+        <Todo todo={todo} key={todo.id} changeTodo={changeTodo}/>
+      ))}
     </div>
   );
 }

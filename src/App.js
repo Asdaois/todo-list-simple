@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { v4 } from "uuid";
 import Todo from "./components/todo/Todo";
+import { todosReducer } from "./reduces/todos.reduce";
 
 export const Priority = {
   Low: "LOW",
@@ -17,24 +18,12 @@ export const TodoPlaceholder = {
 };
 
 function App() {
-  const [todos, setTodos] = useState([TodoPlaceholder]);
-
-  const changeTodo = (todoToChange) => {
-    const newTodos = [...JSON.parse(JSON.stringify(todos))].map(todo => {
-      if (todo.id === todoToChange.id)
-      {
-        return todoToChange
-      }
-      return todo
-    })
-
-    setTodos(newTodos)
-  }
+  const [todos, dispatch] = useReducer(todosReducer, [TodoPlaceholder])
 
   return (
     <div className="">
       {todos.map((todo) => (
-        <Todo todo={todo} key={todo.id} changeTodo={changeTodo}/>
+        <Todo todo={todo} key={todo.id}  dispatch={dispatch}/>
       ))}
     </div>
   );

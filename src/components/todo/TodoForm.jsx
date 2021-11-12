@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Priority } from "../../App";
 import { getKeysFromObject } from "../../helpers/enumHelpers";
+import { updateTodo } from "../../reduces/todos.action";
 
 const getPriorityOptions = () =>
   getKeysFromObject(Priority).map((value, index) => {
     return <option key={index}>{value.toUpperCase()}</option>;
   });
 
-const TodoForm = ({ todoValues, handleSubmitNewTodo }) => {
+const TodoForm = ({ todoValues, showTodo, dispatch }) => {
   const [newTodo, setNewTodo] = useState({ ...todoValues });
 
   const handleChangeValues = (e) => {
@@ -44,8 +45,9 @@ const TodoForm = ({ todoValues, handleSubmitNewTodo }) => {
         </div>
         <button
           onClick={(e) => {
-            e.preventDefault();
-            handleSubmitNewTodo(newTodo);
+            e.preventDefault()
+            showTodo()
+            dispatch(updateTodo(newTodo.id, newTodo))
           }}
         >
           Change
